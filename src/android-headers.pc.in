@@ -1,0 +1,7 @@
+includedir=/usr/include/droid-@device@
+
+Name: android-headers
+Description: Provides the headers for the droid system
+Version: @version@
+Cflags: -I${includedir} -I${includedir}/android
+

@@ -1,0 +1,24 @@
+%_droid_post() \
+if [ $1 -eq 1 ] ; then \
+  # Initial installation \
+  systemctl start droid-hal-init.service ||: \
+fi \
+%{nil}
+
+%_droid_preun() \
+if [ $1 -eq 0 ] ; then \
+  # Package removal \
+  /bin/systemctl stop droid-hal-init.service ||: \
+fi \
+%{nil}
+
+%_droid_users_post() \
+/usr/libexec/droid/user-group-create.sh &> /dev/null ||: \
+# These can be called only after user-group-create.sh is called so that user \
+# has enough rights to access system. \
+/usr/bin/groupadd-user graphics \
+/usr/bin/groupadd-user system \
+/usr/bin/groupadd-user input \
+/usr/bin/groupadd-user camera \
+%{nil}
+

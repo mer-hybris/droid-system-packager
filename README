@@ -1,0 +1,48 @@
+
+== droid-system-<DEVICE> packaging guide ==
+
+When developing an droid system package following things are expected to be done
+in the rpm .spec file.
+
+In the top of the .spec define following macro.
+%define dsp_version %{expand:%(rpm -q --qf '[%%{version}]' droid-system-packager)}
+
+One should do three packages:
+
+* droid-system-<DEVICE>
+  Require the version of droid-system-packager, that was used for build, in main package to make sure the compatibility.
+  Requires: droid-system-packager = %{dsp_version}
+  BuildRequires: droid-system-packager
+
+* droid-system-<DEVICE>-users
+  that calls %_droid_users_post in %post section and includes 
+  /usr/libexec/droid/user-group-create.sh in %files.
+
+* droid-system-<DEVICE>-devel
+  that contains the /usr/share/droid-<DEVICE>/* files
+
+In %build section following line should be called:
+make -C %{_datadir}/droid/src/ INCLUDEDIR=$PWD/include/ DESTDIR=$PWD/
+
+In %install section:
+/usr/bin/droid/droid-system-prepare.sh $RPM_BUILD_ROOT <DEVICE> $PWD
+make -C %{_datadir}/droid/src/ DESTDIR=$RPM_BUILD_ROOT/ DEVICE=<DEVICE> install
+
+Optional for %install section:
+If you want to exclude the mounting from android and use it in our host os you can convert the 
+fstab entries to systemd entries with following command. The SRC_MAPPINGS_FILE content contains
+the src from fstab entry and then the real device path in case the fstab is using links that do
+not exist on very early system init. SRC_MAPPINGS_FILE assumes lines with comma e.g., "src,mapping_src"
+
+/usr/bin/droid/fstab-to-systemd-services.sh $RPM_BUILD_ROOT/fstab.xyz $RPM_BUILD_ROOT/lib/systemd/system/ SRC_MAPPINGS_FILE
+
+/usr/bin/droid/droid-system-precheck.sh $RPM_BUILD_ROOT/
+
+Here <DEVICE> is the device name that is ueventd.<DEVICE>.rc file in the $RPM_BUILD_ROOT
+
+In %preun of main package
+%_droid_preun
+
+In %post of main package
+%_droid_post
+
