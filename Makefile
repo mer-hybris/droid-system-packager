@@ -21,6 +21,8 @@ install:
 	ln -s ../droid-hal-init.service $(DESTDIR)/lib/systemd/system/basic.target.wants/droid-hal-init.service
 	install -D -m 644 systemd/droid-battery-monitor.service $(DESTDIR)/lib/systemd/system/droid-battery-monitor.service
 	ln -s ../droid-battery-monitor.service/ $(DESTDIR)/lib/systemd/system/basic.target.wants/
+	install -D -m 644 systemd/droid-late-start.service $(DESTDIR)/lib/systemd/system/droid-late-start.service
+	ln -s ../droid-late-start.service $(DESTDIR)/lib/systemd/system/basic.target.wants/
 	install -D -m 644 systemd/adbd.service $(DESTDIR)/lib/systemd/system/adbd.service
 	
 	# RPM macros
