@@ -39,6 +39,8 @@ rm -rf $RPM_BUILD_ROOT
 /lib/systemd/system/basic.target.wants/droid-hal-init.service
 /lib/systemd/system/droid-battery-monitor.service
 /lib/systemd/system/basic.target.wants/droid-battery-monitor.service
+/lib/systemd/system/droid-late-start.service
+/lib/systemd/system/basic.target.wants/droid-late-start.service
 /lib/systemd/system/adbd.service
 /etc/udev/rules.d/60-persistent-v4l.rules
 %{_bindir}/droid/droid-init-done.sh
