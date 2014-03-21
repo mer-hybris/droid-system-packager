@@ -1,7 +1,7 @@
 Summary: 	Droid BSP packager
 License: 	BSD-3-Clause
 Name: 		droid-system-packager
-Version: 0.1
+Version: 0.2
 Release: 1
 Source0: 	%{name}-%{version}.tar.bz2
 Group:		Development/Tools
